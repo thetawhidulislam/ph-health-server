@@ -3,6 +3,6 @@ import { DoctorController } from "./doctor.controller";
 
 const router = Router();
 
-router.post("create-doctor", DoctorController.createDoctor);
+router.get("/", DoctorController.getAllDoctors);
 
 export const DoctorRouter = router;
