@@ -1,6 +1,9 @@
 import { JwtPayload, SignOptions } from "jsonwebtoken";
 import { jwtUtils } from "./jwt";
 import { envVars } from "../../config/env";
+import { Response } from "express";
+import { CookieUtils } from "./cookie";
+import ms, { StringValue } from "ms";
 
 const getAccessToken = (payload: JwtPayload) => {
   const acccessToken = jwtUtils.createToken(
@@ -22,7 +25,39 @@ const getRefreshToken = (payload: JwtPayload) => {
   );
   return refreshToken;
 };
+
+const setAccessTokenCookie = (res: Response, token: string) => {
+  CookieUtils.setCookie(res, "accessToken", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 60 * 60 * 60 * 24,
+  });
+};
+const setRefreshTokenCookie = (res: Response, token: string) => {
+  CookieUtils.setCookie(res, "refreshToken", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 60 * 60 * 60 * 24 * 7,
+  });
+};
+
+const setBetterAuthSessionCokkie = (res: Response, token: string) => {
+  CookieUtils.setCookie(res, "better-auth.session_token", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "none",
+    path: "/",
+    maxAge: 60 * 60 * 60 * 24,
+  });
+};
 export const tokenUtils = {
   getAccessToken,
   getRefreshToken,
+  setAccessTokenCookie,
+  setBetterAuthSessionCokkie,
+  setRefreshTokenCookie,
 };
