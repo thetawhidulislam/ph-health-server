@@ -1,3 +1,4 @@
+
 import { Request, Response } from "express";
 import catchAsync from "../../shared/catchAsync";
 import { authService } from "./auth.service";
@@ -44,7 +45,20 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getMe = catchAsync(async (req: Request, res: Response) => {
+  const user = req.user;
+  console.log({user});
+  const result = await authService.getMe(user)
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "User Info Retrived Successfully",
+    data: result,
+  });
+
+});
 export const authController = {
   resgisterPatient,
   loginUser,
+  getMe,
 };

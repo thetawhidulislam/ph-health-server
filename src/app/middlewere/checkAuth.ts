@@ -71,6 +71,11 @@ export const checkAuth =
               "Forbidden Access ! You do not have permission to access this resource",
             );
           }
+          req.user = {
+            userId: user.id,
+            role: user.role,
+            email: user.email,
+          };
         }
       }
 
