@@ -17,6 +17,12 @@ interface EnvConfig {
   BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN: string;
 
   BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: string;
+  EMAIL_SENDER: {
+    STMP_HOST: string;
+    STMP_PORT: string;
+    STMP_USER: string;
+    STMP_PASS: string;
+  };
 }
 const loadEnvVariables = (): EnvConfig => {
   const requireEnvVariable = [
@@ -31,6 +37,10 @@ const loadEnvVariables = (): EnvConfig => {
     "REFRESH_TOKEN_EXPIRES_IN",
     "BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN",
     "BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE",
+    "EMAIL_SENDER_STMP_HOST",
+    "EMAIL_SENDER_STMP_PORT",
+    "EMAIL_SENDER_STMP_USER",
+    "EMAIL_SENDER_STMP_PASS",
   ];
   requireEnvVariable.forEach((variable) => {
     if (!process.env[variable]) {
@@ -57,6 +67,12 @@ const loadEnvVariables = (): EnvConfig => {
       .BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN as string,
     BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: process.env
       .BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE as string,
+    EMAIL_SENDER: {
+      STMP_HOST: process.env.EMAIL_SENDER_STMP_HOST as string,
+      STMP_PORT: process.env.EMAIL_SENDER_STMP_PORT as string,
+      STMP_USER: process.env.EMAIL_SENDER_STMP_USER as string,
+      STMP_PASS: process.env.EMAIL_SENDER_STMP_PASS as string,
+    },
   };
 };
 
