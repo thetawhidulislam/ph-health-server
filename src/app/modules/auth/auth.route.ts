@@ -13,4 +13,14 @@ router.get(
   authController.getMe,
 );
 router.post("/refresh-token", authController.getNewToken);
+router.post(
+  "/change-password",
+  checkAuth(Role.SUPER_ADMIN, Role.PATIENT, Role.DOCTOR, Role.ADMIN),
+  authController.changePassword,
+);
+router.post(
+  "/logout",
+  checkAuth(Role.SUPER_ADMIN, Role.PATIENT, Role.DOCTOR, Role.ADMIN),
+  authController.logoutUser,
+);
 export const AuthRoutes = router;

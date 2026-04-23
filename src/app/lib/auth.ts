@@ -5,6 +5,7 @@ import { prisma } from "./prisma";
 import { Role, UserStatus } from "../../generated/prisma/enums";
 import ms, { StringValue } from "ms";
 import { envVars } from "../../config/env";
+import { bearer } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -42,6 +43,9 @@ export const auth = betterAuth({
       },
     },
   },
+  plugins:[
+    bearer()
+  ],
   session: {
     expiresIn: 60 * 60 * 60 * 24,
     updateAge: 60 * 60 * 60 * 24,
