@@ -18,11 +18,15 @@ interface EnvConfig {
 
   BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: string;
   EMAIL_SENDER: {
-    STMP_HOST: string;
-    STMP_PORT: string;
-    STMP_USER: string;
-    STMP_PASS: string;
+    SMTP_HOST: string;
+    SMTP_PORT: string;
+    SMTP_USER: string;
+    SMTP_PASSWORD: string;
   };
+  GOOGLE_CLIENT_ID: string;
+  GOOGLE_CLIENT_SECRET: string;
+  GOOGLE_CALLBACK_URL: string;
+  FRONTEND_URL: string;
 }
 const loadEnvVariables = (): EnvConfig => {
   const requireEnvVariable = [
@@ -37,10 +41,14 @@ const loadEnvVariables = (): EnvConfig => {
     "REFRESH_TOKEN_EXPIRES_IN",
     "BETTER_AUTH_SESSION_TOKEN_EXPIRES_IN",
     "BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE",
-    "EMAIL_SENDER_STMP_HOST",
-    "EMAIL_SENDER_STMP_PORT",
-    "EMAIL_SENDER_STMP_USER",
-    "EMAIL_SENDER_STMP_PASS",
+    "EMAIL_SENDER_SMTP_HOST",
+    "EMAIL_SENDER_SMTP_PORT",
+    "EMAIL_SENDER_SMTP_USER",
+    "EMAIL_SENDER_SMTP_PASSWORD",
+    "GOOGLE_CLIENT_ID",
+    "GOOGLE_CLIENT_SECRET",
+    "GOOGLE_CALLBACK_URL",
+    "FRONTEND_URL",
   ];
   requireEnvVariable.forEach((variable) => {
     if (!process.env[variable]) {
@@ -68,11 +76,15 @@ const loadEnvVariables = (): EnvConfig => {
     BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE: process.env
       .BETTER_AUTH_SESSION_TOKEN_UPDATE_AGE as string,
     EMAIL_SENDER: {
-      STMP_HOST: process.env.EMAIL_SENDER_STMP_HOST as string,
-      STMP_PORT: process.env.EMAIL_SENDER_STMP_PORT as string,
-      STMP_USER: process.env.EMAIL_SENDER_STMP_USER as string,
-      STMP_PASS: process.env.EMAIL_SENDER_STMP_PASS as string,
+      SMTP_HOST: process.env.EMAIL_SENDER_SMTP_HOST as string,
+      SMTP_PORT: process.env.EMAIL_SENDER_SMTP_PORT as string,
+      SMTP_USER: process.env.EMAIL_SENDER_SMTP_USER as string,
+      SMTP_PASSWORD: process.env.EMAIL_SENDER_SMTP_PASSWORD as string,
     },
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID as string,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET as string,
+    GOOGLE_CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL as string,
+    FRONTEND_URL: process.env.FRONTEND_URL as string,
   };
 };
 

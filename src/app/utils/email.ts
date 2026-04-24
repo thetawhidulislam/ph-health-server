@@ -6,13 +6,13 @@ import status from "http-status";
 import path from "path";
 import ejs from "ejs";
 const transporter = nodeMailer.createTransport({
-  host: envVars.EMAIL_SENDER.STMP_HOST,
+  host: envVars.EMAIL_SENDER.SMTP_HOST,
   secure: true,
   auth: {
-    user: envVars.EMAIL_SENDER.STMP_USER,
-    pass: envVars.EMAIL_SENDER.STMP_PASS,
+    user: envVars.EMAIL_SENDER.SMTP_USER,
+    pass: envVars.EMAIL_SENDER.SMTP_PASSWORD,
   },
-  port: Number(envVars.EMAIL_SENDER.STMP_PORT),
+  port: Number(envVars.EMAIL_SENDER.SMTP_PORT),
 });
 
 interface SendEmailOptions {
@@ -40,7 +40,7 @@ export const sendEmail = async ({
     );
     const html = await ejs.renderFile(templatePath, templateData);
     const info = await transporter.sendMail({
-      from: envVars.EMAIL_SENDER.STMP_USER,
+      from: envVars.EMAIL_SENDER.SMTP_USER,
       to: to,
       subject: subject,
       html: html,

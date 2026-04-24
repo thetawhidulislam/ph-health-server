@@ -127,6 +127,35 @@ const logoutUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const { email, otp } = req.body;
+  await authService.verifyEmail(email, otp);
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "Email verified successfully",
+  });
+});
+const forgetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.body;
+  await authService.forgetPassword(email);
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "Password reset OTP sent to email if it exists",
+  });
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email, otp, newPassword } = req.body;
+  await authService.resetPassword(email, otp, newPassword);
+  sendResponse(res, {
+    httpStatusCode: status.OK,
+    success: true,
+    message: "Password reset successfully",
+  });
+});
 export const authController = {
   resgisterPatient,
   loginUser,
@@ -134,4 +163,7 @@ export const authController = {
   getNewToken,
   changePassword,
   logoutUser,
+  verifyEmail,
+  forgetPassword,
+  resetPassword,
 };

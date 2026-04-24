@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OTP Verification</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f4f7fb;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 100%;
+      padding: 40px 0;
+    }
+
+    .card {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      color: #111827;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #6b7280;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .otp-box {
+      margin: 30px 0;
+      background: #eff6ff;
+      border: 2px dashed #2563eb;
+      padding: 18px;
+      border-radius: 10px;
+    }
+
+    .otp {
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 8px;
+      color: #2563eb;
+    }
+
+    .expire {
+      color: #ef4444;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="logo">Ph Health Care</div>
+
+      <h1>Hello, <%= name %> 👋</h1>
+
+      <p>
+        Use the verification code below to complete your sign in process.
+      </p>
+
+      <div class="otp-box">
+        <div class="otp"><%= otp %></div>
+      </div>
+
+      <p class="expire">
+        This OTP will expire in 2 minutes.
+      </p>
+
+      <div class="footer">
+        If you didn’t request this code, you can safely ignore this email.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -23,4 +23,8 @@ router.post(
   checkAuth(Role.SUPER_ADMIN, Role.PATIENT, Role.DOCTOR, Role.ADMIN),
   authController.logoutUser,
 );
+router.post("/forget-password", authController.forgetPassword);
+router.post("/reset-password", authController.resetPassword);
+
+router.post("/email-verify", authController.verifyEmail);
 export const AuthRoutes = router;
