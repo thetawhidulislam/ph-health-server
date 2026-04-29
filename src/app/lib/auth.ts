@@ -18,7 +18,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
   },
-  social: {
+  socialProviders: {
     google: {
       clientId: envVars.GOOGLE_CLIENT_ID,
       clientSecret: envVars.GOOGLE_CLIENT_SECRET,
@@ -28,9 +28,9 @@ export const auth = betterAuth({
           role: Role.PATIENT,
           status: UserStatus.ACTIVE,
           needPasswordChange: false,
-          isDeleted: false,
           emailVerified: true,
-          deletedAT: null,
+          isDeleted: false,
+          deletedAt: null,
         };
       },
     },
@@ -123,9 +123,9 @@ export const auth = betterAuth({
     },
   },
 
-  // redirectURLs:{
-  //   signIn: ""
-  // }
+  redirectURLs:{
+    signIn: `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
+  },
   // trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
   advanced: {
     // disableCSRFCheck: true,

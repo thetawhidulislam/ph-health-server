@@ -6,6 +6,7 @@ import { DoctorRouter } from "../modules/doctor/doctor.route";
 
 const router = Router();
 
+
 router.use("/auth", AuthRoutes);
 router.use("/specialties", SpecialityRoutes);
 router.use("/users", UserRouter);

@@ -16,6 +16,7 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 
 app.use("/api/auth", toNodeHandler(auth));
+
 // Enable URL-encoded form data parsing
 app.use(express.urlencoded({ extended: true }));
 
