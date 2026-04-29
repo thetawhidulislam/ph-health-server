@@ -9,12 +9,31 @@ import { bearer, emailOTP } from "better-auth/plugins";
 import { sendEmail } from "../utils/email";
 
 export const auth = betterAuth({
+  baseURL: envVars.BETTER_AUTH_URL || "http://localhost:5000",
+  secret: envVars.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: true,
+  },
+  social: {
+    google: {
+      clientId: envVars.GOOGLE_CLIENT_ID,
+      clientSecret: envVars.GOOGLE_CLIENT_SECRET,
+      // callbackUrl: envVars.GOOGLE_CALLBACK_URL,
+      mapProfileToUser: () => {
+        return {
+          role: Role.PATIENT,
+          status: UserStatus.ACTIVE,
+          needPasswordChange: false,
+          isDeleted: false,
+          emailVerified: true,
+          deletedAT: null,
+        };
+      },
+    },
   },
   emailVerification: {
     sendOnSignUp: true,
@@ -79,7 +98,7 @@ export const auth = betterAuth({
             },
           });
           if (user) {
-             sendEmail({
+            sendEmail({
               to: email,
               subject: "Reset Your Password",
               templateName: "otp",
@@ -103,8 +122,23 @@ export const auth = betterAuth({
       maxAge: 60 * 60 * 60 * 24,
     },
   },
+
+  // redirectURLs:{
+  //   signIn: ""
+  // }
   // trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
-  // advanced: {
-  //   disableCSRFCheck: true,
-  // },
+  advanced: {
+    // disableCSRFCheck: true,
+    useSecureCookies: false,
+    cookies: {
+      state: {
+        attributes: {
+          sameSite: "none",
+          secure: true,
+          path: "/",
+          httpOnly: true,
+        },
+      },
+    },
+  },
 });

@@ -337,6 +337,8 @@ const resetPassword = async (
     },
   });
 };
+
+const googleLoginSuccess = async () => {};
 export const authService = {
   resgisterPatient,
   loginUser,
