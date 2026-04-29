@@ -26,7 +26,7 @@ app.use(
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-    allowHeaders: ["Content-Type", "Authorization"],
+    // allowHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use("/api/auth", toNodeHandler(auth));
@@ -36,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/v1", IndexRoutes);
