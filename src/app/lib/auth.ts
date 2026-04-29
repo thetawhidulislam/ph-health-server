@@ -126,7 +126,7 @@ export const auth = betterAuth({
   redirectURLs:{
     signIn: `${envVars.BETTER_AUTH_URL}/api/v1/auth/google/success`,
   },
-  // trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
+  trustedOrigins: [process.env.BETTER_AUTH_URL || "http://localhost:5000"],
   advanced: {
     // disableCSRFCheck: true,
     useSecureCookies: false,
