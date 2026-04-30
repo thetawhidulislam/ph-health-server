@@ -55,6 +55,16 @@ export interface PrismaStringFilter {
   gt?: string;
   lt?: string;
 }
+export interface PrismaNumberFilter {
+  equals?: number;
+  in?: number[];
+  notIn?: number[];
+  lt?: number;
+  lte?: number;
+  gt?: number;
+  gte?: number;
+  not?: PrismaNumberFilter | number;
+}
 export interface PrismaWhereConditons {
   OR?: Record<string, unknown>[];
   AND?: Record<string, unknown>[];
