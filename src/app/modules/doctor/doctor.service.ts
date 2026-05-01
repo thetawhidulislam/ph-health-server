@@ -14,19 +14,22 @@ import { Doctor, Prisma } from "../../../generated/prisma/client";
 
 const getAllDoctors = async (query: IQueryParams) => {
   // const doctors = await prisma.doctor.findMany({
-  //   where: {
-  //     isDeleted: false,
-  //   },
-  //   include: {
-  //     user: true,
-  //     specialities: {
-  //       include: {
-  //         specialty: true,
-  //       },
+  //     where: {
+  //         isDeleted: false,
   //     },
-  //   },
-  // });
+  //     include: {
+  //         user: true,
+  //         specialties: {
+  //             include: {
+  //                 specialty: true
+  //             }
+  //         }
+  //     }
+  // })
+
+  // // const query = new QueryBuilder().paginate().search().filter();
   // return doctors;
+
   const queryBuilder = new QueryBuilder<
     Doctor,
     Prisma.DoctorWhereInput,
@@ -35,21 +38,32 @@ const getAllDoctors = async (query: IQueryParams) => {
     searchableFields: doctorSearchableFields,
     filterableFields: doctorFilterableFields,
   });
+
   const result = await queryBuilder
-    .filter()
     .search()
-    .where({ isDeleted: false })
+    .filter()
+    .where({
+      isDeleted: false,
+    })
     .include({
       user: true,
-      specialities: true,
+      // specialties: true,
+      specialities: {
+        include: {
+          specialty: true,
+        },
+      },
     })
     .dynamicInclude(doctorIncludeConfig)
     .paginate()
     .sort()
     .fields()
     .execute();
+
+  console.log(result);
   return result;
 };
+
 const getDoctorById = async (id: string) => {
   const doctor = await prisma.doctor.findUnique({
     where: {
@@ -92,7 +106,7 @@ const updateDoctor = async (id: string, payload: IUpdateDoctorPayload) => {
     throw new AppError(status.NOT_FOUND, "Doctor not found");
   }
 
-  const { doctor: doctorData, specialties } = payload;
+  const { doctor: doctorData, specialities } = payload;
 
   await prisma.$transaction(async (tx) => {
     if (doctorData) {
@@ -106,8 +120,8 @@ const updateDoctor = async (id: string, payload: IUpdateDoctorPayload) => {
       });
     }
 
-    if (specialties && specialties.length > 0) {
-      for (const specialty of specialties) {
+    if (specialities && specialities.length > 0) {
+      for (const specialty of specialities) {
         const { specialtyId, shouldDelete } = specialty;
         if (shouldDelete) {
           await tx.doctorSpeciality.delete({

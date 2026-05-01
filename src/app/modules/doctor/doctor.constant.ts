@@ -7,7 +7,7 @@ export const doctorSearchableFields = [
   "designation",
   "currentWorkingPlace",
   "registrationNumber",
-  "specialties.specialty.title",
+  "specialities.specialty.title",
 ];
 
 export const doctorFilterableFields = [
@@ -16,11 +16,11 @@ export const doctorFilterableFields = [
   "appointmentFee",
   "experience",
   "registrationNumber",
-  "specialties.specialtyId",
+  "specialities.specialtyId",
   "currentWorkingPlace",
   "designation",
   "qualification",
-  "specialties.specialty.title",
+  "specialities.specialty.title",
   "user.role",
 ];
 

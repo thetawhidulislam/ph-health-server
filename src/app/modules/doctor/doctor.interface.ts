@@ -18,5 +18,5 @@ export interface IUpdateDoctorPayload {
     currentWorkingPlace?: string;
     designation?: string;
   };
-  specialties?: IUpdateDoctorSpecialtyPayload[];
+  specialities?: IUpdateDoctorSpecialtyPayload[];
 }

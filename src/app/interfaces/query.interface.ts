@@ -38,8 +38,8 @@ export interface IQueryParams {
   [key: string]: string | undefined;
 }
 export interface IQueryConfig {
-  searchableFields: string[];
-  filterableFields: string[];
+  searchableFields?: string[];
+  filterableFields?: string[];
 }
 export interface PrismaStringFilter {
   contains: string;
@@ -65,7 +65,7 @@ export interface PrismaNumberFilter {
   gte?: number;
   not?: PrismaNumberFilter | number;
 }
-export interface PrismaWhereConditons {
+export interface PrismaWhereConditions {
   OR?: Record<string, unknown>[];
   AND?: Record<string, unknown>[];
   NOT?: Record<string, unknown>[];
