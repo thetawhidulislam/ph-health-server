@@ -8,6 +8,7 @@
     "build": "tsc",
     "migrate": "prisma migrate dev",
     "generate": "prisma generate",
+    "stripe:webhook": "stripe listen --forward-to localhost:5000/webhook",
     "studio": "prisma studio",
     "push": "prisma db push",
     "pull": "prisma db pull",

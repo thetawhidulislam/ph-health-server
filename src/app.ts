@@ -19,6 +19,12 @@ app.set("query parser", (string: string) => qs.parse(string));
 app.set("view engine", "ejs");
 app.set("views", path.resolve(process.cwd(), `src/app/templates`));
 
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
+  // Handle webhook logic here
+  console.log(req.body, "webhook request");
+  res.status(200).json({ received: true });
+});
+
 app.use(
   cors({
     origin: [
