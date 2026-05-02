@@ -5,6 +5,8 @@ import { IBookAppointmentPayload } from "./appointment.interface";
 import { AppointmentStatus, Role } from "../../../generated/prisma/enums";
 import AppError from "../../errorHelper/AppError";
 import status from "http-status";
+import stripe from "../../../config/stripe.config";
+import { envVars } from "../../../config/env";
 
 // Pay Now Book Appointment
 const bookAppointment = async (
@@ -59,7 +61,48 @@ const bookAppointment = async (
         isBooked: true,
       },
     });
+    //TODO: payment intergate
+    const transactionId = String(uuidv7());
+    const paymentData = await tx.payment.create({
+      data: {
+        appointmentId: appointmentData.id,
+        amount: doctorData.appointmentFee,
+        transactionId,
+      },
+    });
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: { name: `Appointment with Dr. ${doctorData.name}` },
+            unit_amount: doctorData.appointmentFee * 120, // amount in cents
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        appointmentId: appointmentData.id,
+        paymentId: paymentData.id,
+        transactionId,
+      },
+      success_url: `${envVars.FRONTEND_URL}/dashboard/payment/payment-success`,
+      // cancel_url: `${envVars.FRONTEND_URL}/dashboard/payment/payment-failed`,
+      cancel_url: `${envVars.FRONTEND_URL}/dashboard/appointments`,
+    });
+    return {
+      paymentUrl: session.url,
+      paymentData,
+      appointmentData,
+    };
   });
+  return {
+    paymentUrl: result.paymentUrl,
+    payment: result.paymentData,
+    appointment: result.appointmentData,
+  };
 };
 
 const getMyAppointments = async (user: IRequestUser) => {
