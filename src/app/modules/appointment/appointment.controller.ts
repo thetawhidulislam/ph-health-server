@@ -4,11 +4,15 @@ import status from "http-status";
 import { sendResponse } from "../../shared/sendResponse";
 import { AppointmentService } from "./appointment.service";
 import catchAsync from "../../shared/catchAsync";
+import { IRequestUser } from "../../interfaces/requestUser.interface";
 
 const bookAppointment = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
   const user = req.user;
-  const appointment = "";
+  const appointment = await AppointmentService.bookAppointment(
+    payload,
+    user as IRequestUser,
+  );
   sendResponse(res, {
     success: true,
     httpStatusCode: status.CREATED,
@@ -19,7 +23,9 @@ const bookAppointment = catchAsync(async (req: Request, res: Response) => {
 
 const getMyAppointments = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  const appointments = "";
+  const appointments = await AppointmentService.getMyAppointments(
+    user as IRequestUser,
+  );
   sendResponse(res, {
     success: true,
     httpStatusCode: status.OK,
@@ -34,7 +40,11 @@ const changeAppointmentStatus = catchAsync(
     const payload = req.body;
     const user = req.user;
 
-    const updatedAppointment = "";
+    const updatedAppointment = await AppointmentService.changeAppointmentStatus(
+      appointmentId as string,
+      payload,
+      user as IRequestUser,
+    );
     sendResponse(res, {
       success: true,
       httpStatusCode: status.OK,
@@ -49,7 +59,10 @@ const getMySingleAppointment = catchAsync(
     const appointmentId = req.params.id;
     const user = req.user;
 
-    const appointment = "";
+    const appointment = await AppointmentService.getMySingleAppointment(
+      appointmentId as string,
+      user as IRequestUser,
+    );
     sendResponse(res, {
       success: true,
       httpStatusCode: status.OK,
