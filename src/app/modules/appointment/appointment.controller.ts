@@ -86,7 +86,10 @@ const bookAppointmentWithPayLater = catchAsync(
   async (req: Request, res: Response) => {
     const payload = req.body;
     const user = req.user;
-    const appointment = "";
+    const appointment = await AppointmentService.bookAppointmentWithPayLater(
+      payload,
+      user as IRequestUser,
+    );
     sendResponse(res, {
       success: true,
       httpStatusCode: status.CREATED,
@@ -99,7 +102,10 @@ const bookAppointmentWithPayLater = catchAsync(
 const initiatePayment = catchAsync(async (req: Request, res: Response) => {
   const appointmentId = req.params.id;
   const user = req.user;
-  const paymentInfo = "";
+  const paymentInfo = await AppointmentService.initiatePayment(
+    appointmentId as string,
+    user as IRequestUser,
+  );
 
   sendResponse(res, {
     success: true,

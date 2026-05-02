@@ -13,7 +13,8 @@ import cors from "cors";
 import { envVars } from "./config/env";
 import qs from "qs";
 import { PaymentController } from "./app/modules/payment/payment.controller";
-
+import cron from "node-cron";
+import { AppointmentService } from "./app/modules/appointment/appointment.service";
 const app: Application = express();
 
 app.set("query parser", (string: string) => qs.parse(string));
@@ -48,6 +49,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+cron.schedule("*/25 * * * *", async () => {
+  try {
+    console.log("Running cron job to cancel unpaid appointments...");
+    await AppointmentService.cancelUnpaidAppointments();
+  } catch (error: any) {
+    console.error("Error occurred while canceling unpaid appointments:", error);
+  }
+});
 app.use("/api/v1", IndexRoutes);
 
 // Basic route
