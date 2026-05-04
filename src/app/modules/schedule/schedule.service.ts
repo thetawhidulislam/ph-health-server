@@ -1,5 +1,8 @@
 import { addHours, addMinutes, format } from "date-fns";
-import { ICreateSchedulePayload, IUpdateSchedulePayload } from "./schedule.interface";
+import {
+  ICreateSchedulePayload,
+  IUpdateSchedulePayload,
+} from "./schedule.interface";
 import { convertDateTime } from "./schedule.utils";
 import { prisma } from "../../lib/prisma";
 import { IQueryParams } from "../../interfaces/query.interface";
@@ -44,7 +47,7 @@ const createSchedule = async (payload: ICreateSchedulePayload) => {
         startDateTime: s,
         endDateTime: e,
       };
-      const existingSchedule = prisma.schedule.findFirst({
+      const existingSchedule = await prisma.schedule.findFirst({
         where: {
           startDateTime: scheduleData.startDateTime,
           endDateTime: scheduleData.endDateTime,
@@ -56,6 +59,7 @@ const createSchedule = async (payload: ICreateSchedulePayload) => {
         });
         schedules.push(result);
       }
+      console.log(existingSchedule, "existingSchedule");
       startDateTime.setMinutes(startDateTime.getMinutes() + interval);
     }
     currentDate.setDate(currentDate.getDate() + 1);

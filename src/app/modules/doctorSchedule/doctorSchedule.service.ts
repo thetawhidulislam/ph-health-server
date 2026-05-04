@@ -26,9 +26,22 @@ const createMyDoctorSchedule = async (
     doctorId: doctorData.id,
     scheduleId,
   }));
-  const result = await prisma.doctorSchedules.createMany({
+  await prisma.doctorSchedules.createMany({
     data: doctorScheduleData,
   });
+
+  const result = await prisma.doctorSchedules.findMany({
+    where: {
+      doctorId: doctorData.id,
+      scheduleId: {
+        in: payload.scheduleIds,
+      },
+    },
+    include: {
+      schedule: true,
+    },
+  });
+
   return result;
 };
 

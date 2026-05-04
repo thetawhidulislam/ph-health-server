@@ -4,33 +4,43 @@ import { prisma } from "../../lib/prisma";
 import { PaymentStatus } from "../../../generated/prisma/enums";
 
 const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
-  const existingEvent = await prisma.payment.findUnique({
+  const existingPayment = await prisma.payment.findFirst({
     where: {
       stripeEventId: event.id,
     },
   });
-  if (existingEvent) {
-    console.log(`Event with ID ${event.id} already processed.`);
-    return { message: "Event already processed" };
+
+  if (existingPayment) {
+    console.log(`Event ${event.id} already processed. Skipping`);
+    return { message: `Event ${event.id} already processed. Skipping` };
   }
+
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
+
       const appointmentId = session.metadata?.appointmentId;
+
       const paymentId = session.metadata?.paymentId;
+
       if (!appointmentId || !paymentId) {
         console.error("Missing appointmentId or paymentId in session metadata");
-        return { message: "Invalid session metadata" };
+        return {
+          message: "Missing appointmentId or paymentId in session metadata",
+        };
       }
+
       const appointment = await prisma.appointment.findUnique({
         where: {
           id: appointmentId,
         },
       });
+
       if (!appointment) {
-        console.error(`Appointment with ID ${appointmentId} not found`);
-        return { message: "Appointment not found" };
+        console.error(`Appointment with id ${appointmentId} not found`);
+        return { message: `Appointment with id ${appointmentId} not found` };
       }
+
       await prisma.$transaction(async (tx) => {
         await tx.appointment.update({
           where: {
@@ -43,6 +53,7 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
                 : PaymentStatus.UNPAID,
           },
         });
+
         await tx.payment.update({
           where: {
             id: paymentId,
@@ -53,30 +64,37 @@ const handlerStripeWebhookEvent = async (event: Stripe.Event) => {
               session.payment_status === "paid"
                 ? PaymentStatus.PAID
                 : PaymentStatus.UNPAID,
-            paymentGateway: session as any,
+            paymentGatewayData: session as any,
           },
         });
       });
+
       console.log(
-        `Payment for appointment ${appointmentId} updated to ${session.payment_status}`,
+        `Processed checkout.session.completed for appointment ${appointmentId} and payment ${paymentId}`,
       );
       break;
     }
     case "checkout.session.expired": {
       const session = event.data.object;
-      console.log(`Checkout session ${session.id} expired`);
+
+      console.log(
+        `Checkout session ${session.id} expired. Marking associated payment as failed.`,
+      );
       break;
     }
-    //  case "payment_intent.succeeded":
     case "payment_intent.payment_failed": {
       const session = event.data.object;
-      console.log(`Payment intent ${session.id} failed`);
+
+      console.log(
+        `Payment intent ${session.id} failed. Marking associated payment as failed.`,
+      );
       break;
     }
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
-  return { message: `Web Event ${event.id} processed successfully` };
+
+  return { message: `Webhook Event ${event.id} processed successfully` };
 };
 
 export const PaymentService = {
