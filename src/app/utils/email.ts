@@ -23,7 +23,7 @@ interface SendEmailOptions {
   attachments?: {
     filename: string;
     content: Buffer | string;
-    contectType?: string;
+    contentType?: string;
   }[];
 }
 export const sendEmail = async ({
@@ -47,7 +47,7 @@ export const sendEmail = async ({
       attachments: attachments?.map((att) => ({
         filename: att.filename,
         content: att.content,
-        contentType: att.contectType,
+        contentType: att.contentType,
       })),
     });
     console.log(
