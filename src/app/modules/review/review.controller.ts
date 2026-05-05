@@ -30,7 +30,7 @@ const getAllReviews = catchAsync(async (req: Request, res: Response) => {
 
 const myReviews = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  const result = await ReviewService.myReviews(user);
+  const result = await ReviewService.myReviews(user as IRequestUser);
   sendResponse(res, {
     httpStatusCode: httpStatus.OK,
     success: true,
@@ -45,7 +45,7 @@ const updateReview = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
 
   const result = await ReviewService.updateReview(
-    user,
+    user as IRequestUser,
     reviewId as string,
     payload,
   );
@@ -60,7 +60,7 @@ const updateReview = catchAsync(async (req: Request, res: Response) => {
 const deleteReview = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const reviewId = req.params.id;
-  const result = await ReviewService.deleteReview(user, reviewId as string);
+  const result = await ReviewService.deleteReview(user as IRequestUser, reviewId as string);
   sendResponse(res, {
     httpStatusCode: httpStatus.OK,
     success: true,
