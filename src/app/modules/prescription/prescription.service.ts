@@ -122,6 +122,9 @@ const givePrescription = async (
       console.log("Failed To send email notification for prescription", error);
     }
     return updatedPrescription;
+  } , {
+    maxWait:15000,
+    timeout:20000,
   });
 
   return result;

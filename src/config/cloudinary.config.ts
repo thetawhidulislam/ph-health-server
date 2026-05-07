@@ -19,7 +19,6 @@ export const uploadFileToCloudinary = async (
       "File buffer and file name are required for upload",
     );
   }
-
   const extension = fileName.split(".").pop()?.toLocaleLowerCase();
 
   const fileNameWithoutExtension = fileName
