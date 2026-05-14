@@ -50,7 +50,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
 
 const getMe = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
-  console.log({ user });
+
   const result = await authService.getMe(user as any);
   sendResponse(res, {
     httpStatusCode: status.OK,

@@ -29,10 +29,8 @@ export const updateMyPatientProfileMiddleware = (req : Request, res : Response, 
             payload.medicalReports = newReports;
         }
     }
-    console.log(payload);
 
     req.body = payload;
-    console.log(req.body);
 
     next();
 };

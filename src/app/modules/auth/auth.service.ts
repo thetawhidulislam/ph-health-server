@@ -151,7 +151,7 @@ const getNewToken = async (refreshToken: string, sessionToken: string) => {
     throw new AppError(status.UNAUTHORIZED, "Invalid refresh token");
   }
   const data = verifiedRefreshToken.data as JwtPayload;
-  console.log({ data });
+
   const newAccessToken = tokenUtils.getAccessToken({
     userId: data.userId,
     role: data.role,
