@@ -51,7 +51,7 @@ app.use(cookieParser());
 
 cron.schedule("*/25 * * * *", async () => {
   try {
-    console.log("Running cron job to cancel unpaid appointments...");
+    console.log("Running cron job to cancel unpaid appointments... up");
     await AppointmentService.cancelUnpaidAppointments();
   } catch (error: any) {
     console.error("Error occurred while canceling unpaid appointments:", error);

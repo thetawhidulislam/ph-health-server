@@ -30,6 +30,7 @@ const resgisterPatient = catchAsync(async (req: Request, res: Response) => {
 });
 const loginUser = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
+
   const result = await authService.loginUser(payload);
   const { accessToken, refreshToken, token, ...rest } = result;
   tokenUtils.setAccessTokenCookie(res, accessToken);
@@ -43,7 +44,7 @@ const loginUser = catchAsync(async (req: Request, res: Response) => {
       token,
       accessToken,
       refreshToken,
-      rest,
+      ...rest,
     },
   });
 });
